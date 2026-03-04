@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Réglages avancés{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h1 class="title">⚙️ Réglages avancés</h1>
+
+    <!-- CPU -->
+    <div class="setting">
+        <label><i class="fa-solid fa-microchip"></i> CPU</label>
+        <select id="cpu">
+            <option value="1">1 core</option>
+            <option value="2">2 cores</option>
+            <option value="4">4 cores</option>
+        </select>
+        <button type="button" onclick="applyCPU()">⚙️ Appliquer</button>
+        <div id="cpu-status" class="status"></div>
+    </div>
+
+    <!-- RAM -->
+    <div class="setting">
+        <label><i class="fa-solid fa-memory"></i> RAM</label>
+        <select id="ram">
+            <option value="1024">1024 MB</option>
+            <option value="2048">2048 MB</option>
+            <option value="4096">4096 MB</option>
+        </select>
+        <button type="button" onclick="applyRAM()">💾 Appliquer</button>
+        <div id="ram-status" class="status"></div>
+    </div>
+
+    <!-- Disque -->
+    <div class="setting">
+        <label><i class="fa-solid fa-database"></i> Gestion du disque</label>
+        <input type="checkbox" id="autoExpand" checked> Expansion automatique
+    </div>
+
+    <!-- Nettoyage cache -->
+    <div class="setting">
+        <label><i class="fa-solid fa-broom"></i> Nettoyer le cache disque</label>
+        <button type="button" onclick="cleanCache()">🧹 Nettoyer</button>
+        <div id="cache-status" class="status"></div>
+    </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.settings-container {
+    margin-left: 100px;
+    padding: 20px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.title {
+    font-size: 2em;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffaa00;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.setting {
+    margin: 20px 0;
+}
+
+.setting label {
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.setting select, .setting input, .setting button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.setting button {
+    background: #ffcc00;
+    color: #000;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.setting button:hover {
+    background: #ffaa00;
+}
+
+.status {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #00d4ff;
+}
+</style>
+
+<script>
+function applyCPU() {
+    const value = document.getElementById("cpu").value;
+    const formData = new FormData();
+    formData.append("cores", value);
+
+    fetch("/api/waydroid/cpu/", { method: "POST", body: formData })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("cpu-status").innerText = "✅ " + data.message;
+    });
+}
+
+function applyRAM() {
+    const value = document.getElementById("ram").value;
+    const formData = new FormData();
+    formData.append("ram", value);
+
+    fetch("/api/waydroid/ram/", { method: "POST", body: formData })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("ram-status").innerText = "✅ " + data.message;
+    });
+}
+
+function cleanCache() {
+    fetch("/api/waydroid/clear/")
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("cache-status").innerText = "✅ " + data.message;
+    });
+}
+
+// Charger les valeurs actuelles au démarrage
+window.onload = function() {
+    // CPU actuel
+    fetch("/api/waydroid/cpu/", { method: "GET" })
+    .then(r => r.json())
+    .then(data => {
+        if (data.message) {
+            document.getElementById("cpu-status").innerText = "ℹ️ " + data.message;
+        }
+        if (data.cores) {
+            document.getElementById("cpu").value = data.cores;
+        }
+    });
+
+    // RAM actuelle
+    fetch("/api/waydroid/ram/", { method: "GET" })
+    .then(r => r.json())
+    .then(data => {
+        if (data.message) {
+            document.getElementById("ram-status").innerText = "ℹ️ " + data.message;
+        }
+        if (data.ram) {
+            document.getElementById("ram").value = data.ram;
+        }
+    });
+};
+</script>
+{% endblock %}

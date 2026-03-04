@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Applications</title>
+    <!-- Import de la police Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Import des icônes Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            background: #121212;
+            font-family: "Poppins", sans-serif; /* ✅ Police globale */
+            color: #fff;
+        }
+
+        .apps-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .apps-container h2 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ffaa00;
+        }
+
+        .app-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .app-card {
+            background: #1e1e2f;
+            padding: 15px;
+            border-radius: 10px;
+            width: 220px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00d4ff;
+        }
+
+        .app-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #ffcc00;
+        }
+
+        .app-version {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+
+        .app-description {
+            font-size: 13px;
+            margin-bottom: 12px;
+            color: #ddd;
+        }
+
+        .app-btn {
+            display: block;
+            margin: 6px auto;
+            padding: 6px 12px;
+            background: #00d4ff;
+            color: #121212;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .app-btn:hover {
+            background: #ffaa00;
+            color: #121212;
+        }
+    </style>
+</head>
+<body>
+    <div class="apps-container">
+        <h2>Liste des Applications</h2>
+        <div class="app-list">
+            {% for app in apps %}
+            <div class="app-card">
+                <i class="fas fa-mobile-alt app-icon"></i>
+                <div class="app-name">{{ app.name }}</div>
+                <div class="app-version">v{{ app.version }}</div>
+                <div class="app-description">{{ app.description }}</div>
+
+                {% if app.apk_file %}
+                    <a href="{{ app.apk_file.url }}" class="app-btn" onclick="return confirm('Télécharger cet APK ?')">Télécharger APK</a>
+                    <a href="#" class="app-btn" onclick="installerApk('{{ app.apk_file.name }}'); return false;">Installer APK</a>
+                {% endif %}
+
+                {% if app.exe_file %}
+                    <a href="{{ app.exe_file.url }}" class="app-btn" onclick="return confirm('Télécharger cet EXE ?')">Télécharger EXE</a>
+                {% endif %}
+            </div>
+            {% empty %}
+                <p>Aucune application disponible.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    function installerApk(apkPath) {
+        if (confirm("Voulez-vous vraiment installer cet APK ?")) {
+            fetch("/install_apk/?apk=" + apkPath)
+              .then(response => response.json())
+              .then(data => alert(data.message));
+        }
+    }
+    </script>
+</body>
+</html>

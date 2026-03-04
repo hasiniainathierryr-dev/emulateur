@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Applications</title>
+</head>
+<body>
+    <h1>Liste des Applications</h1>
+    {% for app in apps %}
+        <div>
+            <strong>{{ app.name }}</strong> (v{{ app.version }})<br>
+            {{ app.description }}<br>
+            {% if app.apk_file %}
+                <a href="{{ app.apk_file.url }}">Télécharger APK</a>
+            {% endif %}
+        </div>
+        <hr>
+    {% empty %}
+        <p>Aucune application disponible.</p>
+    {% endfor %}
+</body>
+</html>

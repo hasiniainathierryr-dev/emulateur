@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mon Application Django{% endblock %}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #121212;
+            color: #fff;
+        }
+        .content {
+            margin-left: 100px; /* espace pour la sidebar */
+            padding: 20px;
+        }
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 80px;
+            background: #1e1e2f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .sidebar a:hover {
+            transform: scale(1.1);
+            color: #00d4ff;
+        }
+        .btn-label {
+            font-size: 12px;
+            margin-top: 4px;
+            color: #ccc;
+            font-weight: 500;
+        }
+        /* Topbar */
+        .topbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 50px;
+            width: 100%;
+            background: #1e1e2f;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .topbar a {
+            color: #fff;
+            font-size: 20px;
+            margin-left: 15px;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .topbar a:hover {
+            color: #00d4ff;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Barre du haut -->
+    <div class="topbar">
+        <a href="{% url 'parametres' %}" title="Réglages"><i class="fa-solid fa-sliders"></i></a>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- ✅ Fonctionnalités actives -->
+        <a href="{% url 'home' %}">
+            <i class="fa-solid fa-house"></i>
+            <span class="btn-label">Accueil</span>
+        </a>
+        <a href="{% url 'multitache' %}">
+            <i class="fa-solid fa-layer-group"></i>
+            <span class="btn-label">Multitâche</span>
+        </a>
+        <a href="{% url 'parametres' %}">
+            <i class="fa-solid fa-gear"></i>
+            <span class="btn-label">Paramètres</span>
+        </a>
+                <!--rotation-->
+            <a href="{% url 'rotation' %}">
+        <i class="fa-solid fa-rotate"></i>
+        <span class="btn-label">Rotation</span>
+            </a>
+
+        <!-- ✅ Fonctionnalités reliées aux nouvelles pages -->
+
+        <a href="{% url 'resolution' %}">
+            <i class="fa-solid fa-display"></i>
+            <span class="btn-label">Résolution</span>
+        </a>
+        <a href="{% url 'son' %}">
+            <i class="fa-solid fa-volume-high"></i>
+            <span class="btn-label">Son</span>
+        </a>
+        <a href="{% url 'applications' %}">
+            <i class="fa-solid fa-mobile-screen"></i>
+            <span class="btn-label">Applications</span>
+        </a>
+    </div>
+
+    <!-- Contenu spécifique à chaque page -->
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Résolution & Affichage{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h1 class="title"><i class="fa-solid fa-display"></i> Réglages Résolution & Affichage</h1>
+
+    <!-- Résolution -->
+    <div class="setting">
+        <label>Résolution</label>
+        <select id="resolution">
+            <option value="800x600">800x600</option>
+            <option value="1024x768">1024x768</option>
+            <option value="1280x720">1280x720</option>
+            <option value="1920x1080">1920x1080</option>
+        </select>
+    </div>
+
+    <!-- Luminosité -->
+    <div class="setting">
+        <label>Luminosité</label>
+        <input type="range" id="brightness" min="0" max="100">
+    </div>
+
+    <!-- Contraste -->
+    <div class="setting">
+        <label>Contraste</label>
+        <input type="range" id="contrast" min="0" max="100">
+    </div>
+
+    <button type="button" onclick="applyResolution()">⚙️ Appliquer</button>
+
+    <!-- Zone de feedback -->
+    <div id="status" class="status"></div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.settings-container {
+    margin-left: 100px;
+    padding: 20px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.title {
+    font-size: 2em;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffaa00;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.setting {
+    margin: 20px 0;
+    font-weight: 600;
+}
+
+select, input, button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+button {
+    background: #ffcc00;
+    color: #000;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #ffaa00;
+}
+
+.status {
+    margin-top: 20px;
+    font-weight: 600;
+    color: #00d4ff;
+}
+</style>
+
+<script>
+function applyResolution() {
+    const resolution = document.getElementById("resolution").value;
+    const [width, height] = resolution.split("x");
+    const brightness = document.getElementById("brightness").value;
+    const contrast = document.getElementById("contrast").value;
+
+    // Résolution
+    const formDataRes = new FormData();
+    formDataRes.append("width", width);
+    formDataRes.append("height", height);
+
+    fetch("/api/waydroid/resolution/", { method: "POST", body: formDataRes })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("status").innerText = "✅ " + data.message;
+    });
+
+    // Luminosité & Contraste
+    const formDataDisplay = new FormData();
+    formDataDisplay.append("brightness", brightness);
+    formDataDisplay.append("contrast", contrast);
+
+    fetch("/api/waydroid/display/", { method: "POST", body: formDataDisplay })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("status").innerText += "\n✅ " + data.message;
+    });
+}
+
+// Charger les valeurs actuelles au démarrage
+window.onload = function() {
+    // Charger résolution actuelle
+    fetch("/api/waydroid/get_resolution/", { method: "GET" })
+    .then(r => r.json())
+    .then(data => {
+        const resSelect = document.getElementById("resolution");
+        const currentRes = `${data.width}x${data.height}`;
+        if ([...resSelect.options].some(opt => opt.value === currentRes)) {
+            resSelect.value = currentRes;
+        }
+    });
+
+    // Charger luminosité/contraste actuels
+    fetch("/api/waydroid/get_display/", { method: "GET" })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("brightness").value = data.brightness;
+        document.getElementById("contrast").value = data.contrast;
+    });
+};
+</script>
+{% endblock %}

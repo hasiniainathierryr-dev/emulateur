@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Multitâche{% endblock %}
+
+{% block content %}
+<div class="multitache-container">
+    <h1 class="title">⚡ Multitâche</h1>
+    <ul class="menu">
+        <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Accueil</a></li>
+        <li><a href="{% url 'parametres' %}"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+        <li><a href="{% url 'applications' %}"><i class="fa-solid fa-mobile-screen"></i> Applications</a></li>
+    </ul>
+</div>
+
+<style>
+/* Import de la police Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.multitache-container {
+    margin-left: 100px;
+    padding: 20px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif; /* Utilisation de Poppins */
+}
+
+.title {
+    font-size: 2em;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffaa00;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Menu style */
+.menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin: 15px 0;
+}
+
+.menu a {
+    text-decoration: none;
+    color: rgba(204, 204, 204, 0.9); /* gris avec opacité renforcée */
+    font-size: 1.2em;
+    font-weight: 600;
+    transition: color 0.3s, text-shadow 0.3s;
+    position: relative;
+    display: inline-block;
+}
+
+.menu a i {
+    margin-right: 8px;
+    color: #ffcc00;
+    transition: transform 0.3s ease;
+}
+
+/* Effet halo animé au survol */
+.menu a:hover {
+    color: #ffaa00; /* Texte devient doré au survol */
+    text-shadow: 0 0 5px #ffcc00;
+}
+
+.menu a:hover i {
+    transform: scale(1.2);
+    animation: haloPulse 1s infinite;
+}
+
+@keyframes haloPulse {
+    0% { text-shadow: 0 0 5px #ffcc00; }
+    50% { text-shadow: 0 0 20px #ffaa00; }
+    100% { text-shadow: 0 0 5px #ffcc00; }
+}
+</style>
+{% endblock %}

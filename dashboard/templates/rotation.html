@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Rotation{% endblock %}
+
+{% block content %}
+    <style>
+        /* Importation de la police Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        .rotation-container {
+            font-family: 'Poppins', sans-serif;
+            margin-top: 20px;
+        }
+
+        .rotation-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .rotation-select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .apply-btn {
+            margin-top: 25px;
+            padding: 10px 20px;
+            background: #FFD700;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .apply-btn i {
+            margin-right: 8px;
+        }
+
+        #rotation-status {
+            margin-top: 20px;
+            color: #00d4ff;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+
+    <div class="rotation-container">
+        <h1>Réglages de rotation</h1>
+        <p>Choisis l’orientation de l’écran :</p>
+
+        <!-- Sélecteur d’orientation -->
+        <label for="rotation-select" class="rotation-label">Orientation :</label>
+        <select id="rotation-select" class="rotation-select">
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Paysage</option>
+            <option value="inverted">Inversé</option>
+        </select>
+
+        <!-- Bouton appliquer -->
+        <div>
+            <button onclick="applyRotation()" class="apply-btn">
+                <i class="fa-solid fa-gear"></i> Appliquer
+            </button>
+        </div>
+
+        <!-- Zone de feedback -->
+        <div id="rotation-status">
+            Orientation actuelle : par defaut
+        </div>
+    </div>
+
+    <script>
+        function applyRotation() {
+            const orientation = document.getElementById("rotation-select").value;
+
+            fetch("/api/waydroid/rotation/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ orientation: orientation })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("rotation-status").innerText =
+                    "Orientation actuelle : " + (data.orientation || orientation);
+            })
+            .catch(error => {
+                document.getElementById("rotation-status").innerText =
+                    "Erreur lors du changement d’orientation.";
+            });
+        }
+
+        // Charger l’orientation actuelle au démarrage
+        window.onload = function() {
+            fetch("/api/waydroid/get_display/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.orientation) {
+                    document.getElementById("rotation-select").value = data.orientation;
+                    document.getElementById("rotation-status").innerText =
+                        "Orientation actuelle : " + data.orientation;
+                }
+            })
+            .catch(error => {
+                document.getElementById("rotation-status").innerText =
+                    "Impossible de récupérer l’orientation actuelle.";
+            });
+        }
+    </script>
+{% endblock %}
