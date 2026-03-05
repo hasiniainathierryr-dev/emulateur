@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tutoriel{% endblock %}
+
+{% block content %}
+<div class="tutorial-container">
+    <h1 class="title"><i class="fa-solid fa-book"></i> Tutoriel HTemulateur</h1>
+    <p class="subtitle">Découvrez la démo en vidéo et suivez les étapes simples pour utiliser l’application.</p>
+
+    <!-- Vidéo YouTube intégrée -->
+    <div class="video-wrapper">
+        <iframe width="560" height="315"
+                src="https://www.youtube.com/watch?v=sF_I5HETAfQ"
+                title="Tutoriel HTemulateur"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <h2 class="steps-title">Étapes principales :</h2>
+    <ol class="steps-list">
+        <li><i class="fa-solid fa-user-plus"></i> Inscrivez-vous avec votre email et mot de passe.</li>
+        <li><i class="fa-solid fa-right-to-bracket"></i> Connectez-vous pour accéder à votre interface.</li>
+        <li><i class="fa-solid fa-desktop"></i> Explorez vos réglages dans le profil (résolution, son, orientation).</li>
+        <li><i class="fa-solid fa-layer-group"></i> Lancez vos applications depuis la page d’accueil.</li>
+        <li><i class="fa-solid fa-right-from-bracket"></i> Déconnectez-vous en un clic pour sécuriser votre compte.</li>
+    </ol>
+
+    <div class="actions">
+        <a href="{% url 'signup' %}" class="btn"><i class="fa-solid fa-user-plus"></i> Essayer maintenant</a>
+        <a href="{% url 'home' %}" class="btn"><i class="fa-solid fa-house"></i> Retour à l’accueil</a>
+    </div>
+</div>
+
+<style>
+.tutorial-container {
+    text-align: center;
+    padding: 40px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+.title {
+    font-size: 2.2em;
+    color: #ffcc00;
+    text-shadow: 0 0 15px #ffaa00;
+    margin-bottom: 15px;
+}
+.subtitle {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    color: rgba(255,255,255,0.8);
+}
+.video-wrapper {
+    margin: 20px auto;
+    display: inline-block;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
+}
+.steps-title {
+    margin-top: 30px;
+    font-size: 1.5em;
+    color: #ffcc00;
+}
+.steps-list {
+    text-align: left;
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 1.1em;
+}
+.steps-list li {
+    margin: 10px 0;
+}
+.steps-list i {
+    color: #ffcc00;
+    margin-right: 8px;
+}
+.actions {
+    margin-top: 30px;
+}
+.actions .btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    background: #ffcc00;
+    color: #000;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;
+}
+.actions .btn:hover {
+    background: #ffaa00;
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}

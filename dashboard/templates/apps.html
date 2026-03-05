@@ -11,7 +11,7 @@
         body {
             margin: 0;
             background: #121212;
-            font-family: "Poppins", sans-serif; /* ✅ Police globale */
+            font-family: "Poppins", sans-serif;
             color: #fff;
         }
 
@@ -92,7 +92,7 @@
 </head>
 <body>
     <div class="apps-container">
-        <h2>Liste des Applications</h2>
+        <h2>📱 Mes Applications</h2>
         <div class="app-list">
             {% for app in apps %}
             <div class="app-card">
@@ -101,13 +101,33 @@
                 <div class="app-version">v{{ app.version }}</div>
                 <div class="app-description">{{ app.description }}</div>
 
+
+                <!-- Bouton pour lancer l'application -->
+                        {% if app.package %}
+            <a href="{% url 'api_open_app' app.package %}" class="app-btn">
+                <i class="fa-solid fa-play"></i> Lancer
+            </a>
+            {% else %}
+            <p style="color:#aaa; font-size:13px;">⚠️ Package non défini</p>
+            {% endif %}
+
+
+
+                <!-- Boutons pour APK -->
                 {% if app.apk_file %}
-                    <a href="{{ app.apk_file.url }}" class="app-btn" onclick="return confirm('Télécharger cet APK ?')">Télécharger APK</a>
-                    <a href="#" class="app-btn" onclick="installerApk('{{ app.apk_file.name }}'); return false;">Installer APK</a>
+                    <a href="{{ app.apk_file.url }}" class="app-btn" onclick="return confirm('Télécharger cet APK ?')">
+                        <i class="fa-solid fa-download"></i> Télécharger APK
+                    </a>
+                    <a href="#" class="app-btn" onclick="installerApk('{{ app.apk_file.name }}'); return false;">
+                        <i class="fa-solid fa-box-open"></i> Installer APK
+                    </a>
                 {% endif %}
 
+                <!-- Boutons pour EXE -->
                 {% if app.exe_file %}
-                    <a href="{{ app.exe_file.url }}" class="app-btn" onclick="return confirm('Télécharger cet EXE ?')">Télécharger EXE</a>
+                    <a href="{{ app.exe_file.url }}" class="app-btn" onclick="return confirm('Télécharger cet EXE ?')">
+                        <i class="fa-solid fa-download"></i> Télécharger EXE
+                    </a>
                 {% endif %}
             </div>
             {% empty %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profil{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1 class="title"><i class="fa-solid fa-user"></i> Profil de {{ user.username }}</h1>
+
+    <div class="settings-card">
+        <p><i class="fa-solid fa-desktop"></i> Résolution : {{ settings.resolution }}</p>
+        <p><i class="fa-solid fa-sun"></i> Luminosité : {{ settings.luminosite }}</p>
+        <p><i class="fa-solid fa-adjust"></i> Contraste : {{ settings.contraste }}</p>
+        <p><i class="fa-solid fa-mobile-screen"></i> Orientation : {{ settings.orientation }}</p>
+        <p><i class="fa-solid fa-volume-high"></i> Volume : {{ settings.volume }}</p>
+        <p><i class="fa-solid fa-sliders"></i> Mode : {{ settings.mode }}</p>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'home' %}" class="btn"><i class="fa-solid fa-house"></i> Accueil</a>
+        <a href="{% url 'logout' %}" class="btn"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+    </div>
+</div>
+
+<style>
+.profile-container {
+    margin-left: 100px;
+    padding: 30px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.title {
+    font-size: 2em;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffaa00;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.settings-card {
+    background: #1e1e1e;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+    margin-bottom: 30px;
+}
+
+.settings-card p {
+    font-size: 1.1em;
+    margin: 10px 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-card i {
+    color: #ffcc00;
+    margin-right: 8px;
+}
+
+.profile-actions .btn {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 10px 20px;
+    background: #ffcc00;
+    color: #000;
+    font-weight: 600;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.profile-actions .btn:hover {
+    background: #ffaa00;
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}

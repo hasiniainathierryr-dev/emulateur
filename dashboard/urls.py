@@ -1,22 +1,30 @@
+from django.contrib import admin
 from django.urls import path
 from dashboard import views
 
 urlpatterns = [
+    # --- Administration ---
+    path("admin/", admin.site.urls),
+    #path("", include("dashboard.urls")),
+
+    # --- Landing page (page vitrine) ---
+    path("", views.landing_view, name="landing"),
+
     # --- Pages classiques ---
-    path("", views.startup, name="startup"),
+    path("startup/", views.startup, name="startup"),  # startup.html dans dashboard/templates/dashboard/
     path("home/", views.home, name="home"),
     path("multitache/", views.multitache, name="multitache"),
     path("parametres/", views.parametres, name="parametres"),
     path("apps/", views.apps, name="apps"),
 
-    # --- Nouveaux panneaux réalistes ---
-    path("rotation/", views.rotation_page, name="rotation"),
-    path("resolution/", views.resolution_page, name="resolution"),
-    path("son/", views.son_page, name="son"),
-    path("applications/", views.applications_page, name="applications"),
+    # --- Panneaux réalistes (pages utilisateur) ---
+    path("rotation/", views.rotation_page, name="rotation_page"),
+    path("resolution/", views.resolution_page, name="resolution_page"),
+    path("son/", views.son_page, name="son_page"),
+    path("applications/", views.applications_page, name="applications_page"),
 
-    # --- API Waydroid ---
-    path("api/waydroid/clear_disk/", views.clear_disk, name="clear_disk"),
+    # --- API Waydroid simulées ---
+    path("api/waydroid/clear_disk/", views.clear_disk, name="api_clear_disk"),
 
     # Résolution
     path("api/waydroid/resolution/", views.resolution, name="api_resolution"),
@@ -44,4 +52,15 @@ urlpatterns = [
 
     # --- API REST de test ---
     path("api/test/", views.test_api, name="test_api"),
+
+    # --- Authentification ---
+    path("signup/", views.signup_view, name="signup"),
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
+    path("profile/", views.profile_view, name="profile"),
+    path("apps/add/", views.add_app, name="add_app"),
+
+
+    # --- Tutoriel / Démo ---
+    path("tutorial/", views.tutorial_view, name="tutorial"),
 ]

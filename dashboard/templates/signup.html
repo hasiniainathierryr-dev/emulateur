@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Inscription</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">S'inscrire</button>
+</form>
+{% if form.errors %}
+    <div class="error">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                {% if "Un utilisateur avec ce nom existe déjà." in error %}
+                    <p>⚠️ Ce nom est déjà pris, choisis-en un autre 😉</p>
+                {% else %}
+                    <p>{{ error }}</p>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock %}

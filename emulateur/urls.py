@@ -1,7 +1,7 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include   # ⚠️ ajoute include ici
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("dashboard.urls")),  # 👉 toutes les routes de dashboard
+    path("", include("dashboard.urls")),  # ✅ fonctionne maintenant
 ]
